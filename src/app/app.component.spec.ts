@@ -1,8 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './components/header/header.component';
 
 describe('AppComponent', () => {
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -20,16 +22,13 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'weather-app-angular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('weather-app-angular');
-  });
+  it('should show current temp link', () => {
+    const fixture = TestBed.createComponent(HeaderComponent);
+    expect(fixture.nativeElement.querySelector('[data-test="current-temp"]')).toBeTruthy();
+  })
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('weather-app-angular app is running!');
-  });
+  it('should show five day temp link', () => {
+    const fixture = TestBed.createComponent(HeaderComponent);
+    expect(fixture.nativeElement.querySelector('[data-test="five-day-temp"]')).toBeTruthy();
+  })
 });
