@@ -4,7 +4,8 @@ import { FiveDayComponent } from './components/five-day/five-day.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', redirectTo: "/current", pathMatch: "full"},
+  { path: 'current', component: HomeComponent},
   { path: 'five-day', component: FiveDayComponent }
 ];
 
