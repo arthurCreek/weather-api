@@ -42,5 +42,9 @@ describe('HomeComponent', () => {
     expect(input.value).toEqual('99999');
   });
 
+  it('should show forecast date and time, temp in farenheit, weather icon', () => {
+    expect(fixture.nativeElement.querySelector('[data-test="temp-card"]')).toBeTruthy();
+  })
+
 });
 

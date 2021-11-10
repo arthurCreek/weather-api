@@ -7,13 +7,15 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { FiveDayComponent } from './components/five-day/five-day.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TempCardComponent } from './components/temp-card/temp-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    FiveDayComponent
+    FiveDayComponent,
+    TempCardComponent
   ],
   imports: [
     BrowserModule,
