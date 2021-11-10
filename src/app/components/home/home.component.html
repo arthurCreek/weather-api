@@ -1,7 +1,13 @@
-<div>
-    <form [formGroup]="formGroup" id="zipcodeForm">
-        <label for="zipcode">Zipcode</label>
-        <input type="number" formControlName="zipcode" data-test="zipcode" id="zipcode">
-    </form>
-
+<div class="flex justify-center pt-16 lg:pt-32">
+  <form [formGroup]="formGroup" id="zipcodeForm" class="flex gap-2 items-center">
+    <label for="zipcode">Zipcode</label>
+    <input
+      type="number"
+      formControlName="zipcode"
+      data-test="zipcode"
+      id="zipcode"
+      class="border-2 w-24"
+    />
+    <button type="submit" class="bg-blue-300 text-white h-full px-2">Submit</button>
+  </form>
 </div>
