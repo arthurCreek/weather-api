@@ -10,7 +10,7 @@ import * as utils from '../../utils/utils';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  formGroup: FormGroup;
+  formGroup!: FormGroup;
   currentWeather: Weather = new Weather;
   currentWeatherLoaded = false;
   weatherType = WeatherType.CURRENT;
@@ -19,20 +19,32 @@ export class HomeComponent implements OnInit {
   zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
-    this.formGroup = new FormGroup({
-      zipcode: new FormControl('', [Validators.required])
-    })
+    this.setFormValues();
   }
 
   ngOnInit(): void {
 
   }
 
+  public setFormValues() {
+    const form = localStorage.getItem('form');
+    let savedZipcode = '';
+    if (form) {
+      savedZipcode = JSON.parse(form).zipcode;
+    }
+    this.formGroup = new FormGroup({
+      zipcode: new FormControl(savedZipcode, [Validators.required])
+    })
+  }
+
   submitZipcode() {
     const zipcode = this.formGroup.value.zipcode.toString();
-    if(zipcode.length === 5 && zipcode != null) {
+    if (zipcode.length === 5 && zipcode != null) {
       this.zipcodeError = false;
       this.getCurrentWeather(zipcode);
+      this.formGroup.markAllAsTouched();
+      const formValues = JSON.stringify(this.formGroup.value);
+      localStorage.setItem('form', formValues);
     } else {
       this.zipcodeError = true;
     }
@@ -47,7 +59,7 @@ export class HomeComponent implements OnInit {
 
   getCurrentWeather(zipcode: string) {
     this.weatherService.getCurrentForecast(zipcode).subscribe(res => {
-      if(res != null) {
+      if (res != null) {
         this.updateCurrentTemp(res);
       } else {
         this.currentWeatherLoaded = false;

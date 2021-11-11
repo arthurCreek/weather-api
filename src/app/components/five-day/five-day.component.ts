@@ -10,7 +10,7 @@ import * as utils from '../../utils/utils';
   styleUrls: ['./five-day.component.css']
 })
 export class FiveDayComponent implements OnInit {
-  formGroup: FormGroup;
+  formGroup!: FormGroup;
   currentWeather: Weather[][] = [];
   currentWeatherLoaded = false;
   location: string = '';
@@ -19,12 +19,21 @@ export class FiveDayComponent implements OnInit {
   zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
-    this.formGroup = new FormGroup({
-      zipcode: new FormControl('', [Validators.required])
-    })
+    this.setFormValues();
   }
 
   ngOnInit(): void { }
+
+  public setFormValues() {
+    const form = localStorage.getItem('form');
+    let savedZipcode = '';
+    if (form) {
+      savedZipcode = JSON.parse(form).zipcode;
+    }
+    this.formGroup = new FormGroup({
+      zipcode: new FormControl(savedZipcode, [Validators.required])
+    })
+  }
 
   submitZipcode() {
     const zipcode = this.formGroup.value.zipcode.toString();
