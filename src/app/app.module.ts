@@ -9,6 +9,7 @@ import { FiveDayComponent } from './components/five-day/five-day.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TempCardComponent } from './components/temp-card/temp-card.component';
 import { WeatherService } from './services/weather.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { WeatherService } from './services/weather.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule
   ],

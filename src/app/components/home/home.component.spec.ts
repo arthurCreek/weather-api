@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { WeatherService } from 'src/app/services/weather.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -9,7 +11,8 @@ describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomeComponent],
-      imports: [FormsModule ,ReactiveFormsModule]
+      imports: [FormsModule ,ReactiveFormsModule],
+      providers: [HttpClient, HttpHandler]
     })
       .compileComponents();
   });

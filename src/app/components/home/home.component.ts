@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { WeatherService } from 'src/app/services/weather.service';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +10,16 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit {
   formGroup: FormGroup;
 
-  constructor() {
+  constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
       zipcode: new FormControl('')
     })
   }
 
   ngOnInit(): void {
-
+    this.weatherService.getCurrentForecast().subscribe(res => {
+      console.log(res)
+    });
   }
 
 }
