@@ -1,5 +1,9 @@
 <div class="flex flex-col items-center pt-16 lg:pt-32">
-  <form [formGroup]="formGroup" id="zipcodeForm" class="flex gap-2 items-center">
+  <form
+    [formGroup]="formGroup"
+    id="zipcodeForm"
+    class="flex gap-2 items-center"
+  >
     <label for="zipcode">Zipcode</label>
     <input
       type="number"
@@ -8,7 +12,15 @@
       id="zipcode"
       class="border-2 w-24"
     />
-    <button type="submit" class="bg-blue-300 text-white h-full px-2">Submit</button>
+    <button type="submit" class="bg-blue-300 text-white h-full px-2">
+      Submit
+    </button>
   </form>
-  <app-temp-card data-test="temp-card" [currentWeather]="currentWeather" [weatherType]="weatherType"></app-temp-card>
+  <div *ngIf="currentWeatherLoaded">
+    <app-temp-card
+      data-test="temp-card"
+      [currentWeather]="currentWeather"
+      [weatherType]="weatherType"
+    ></app-temp-card>
+  </div>
 </div>
