@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   currentWeather: Weather = new Weather;
   currentWeatherLoaded = false;
   weatherType = WeatherType.CURRENT;
+  location: string = '';
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateCurrentTemp(res: any) {
+    this.location = res.name + ', ' + res.sys.country;
     this.currentWeather = utils.createCurrentWeather(res);
     this.currentWeatherLoaded = true;
   }

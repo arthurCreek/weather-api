@@ -32,7 +32,7 @@ export class FiveDayComponent implements OnInit {
     });
   }
   updateCurrentTemps(res: any) {
-    this.location = res.city.name;
+    this.location = res.city.name + ', ' + res.city.country;
     this.currentWeather = utils.createFiveDayForecast(res);
     this.currentWeatherLoaded = true;
   }

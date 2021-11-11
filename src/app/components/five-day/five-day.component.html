@@ -1,4 +1,5 @@
-<div class="flex flex-col items-center pt-16 lg:pt-32">
+<div class="flex flex-col items-center {{!currentWeatherLoaded ? 'pt-16 lg:pt-24' : ''}}">
+  <h1 *ngIf="currentWeatherLoaded" class="text-4xl font-bold py-4">{{location}}</h1>
   <form
     [formGroup]="formGroup"
     id="zipcodeForm"
@@ -19,7 +20,7 @@
   <!-- <app-temp-card data-test="temp-card"></app-temp-card> -->
   <div *ngIf="currentWeatherLoaded">
     <div *ngFor="let weatherDay of currentWeather" class="flex flex-col py-4 border-b-2">
-      <p class="text-4xl font-bold pb-2">{{ weatherDay[0].date }}</p>
+      <p class="text-3xl font-semibold pb-2">{{ weatherDay[0].date }}</p>
       <div class="flex gap-2">
         <div *ngFor="let weatherHour of weatherDay" class="w-1/8">
           <app-temp-card
