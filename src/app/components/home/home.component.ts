@@ -24,8 +24,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.weatherService.currentWeather.subscribe(weather => {
-      console.log(weather)
-      if(weather.date != null) {
+      if (weather.date != null) {
         this.currentWeather = weather;
         this.error = false;
         this.currentWeatherLoaded = true;
@@ -35,20 +34,21 @@ export class HomeComponent implements OnInit {
       }
     });
     this.weatherService.currentlocation.subscribe(location => {
-      if(location != null) {
+      if (location != null) {
         this.location = location;
+      }
+    });
+    this.weatherService.currentZipcode.subscribe(zipcode => {
+      if (zipcode != null && zipcode !== '') {
+        this.formGroup.get('zipcode')?.setValue(zipcode);
+        this.getCurrentWeather(zipcode)
       }
     })
   }
 
   public setFormValues() {
-    const form = localStorage.getItem('form');
-    let savedZipcode = '';
-    if (form) {
-      savedZipcode = JSON.parse(form).zipcode;
-    }
     this.formGroup = new FormGroup({
-      zipcode: new FormControl(savedZipcode, [Validators.required])
+      zipcode: new FormControl('', [Validators.required])
     })
   }
 
@@ -56,10 +56,8 @@ export class HomeComponent implements OnInit {
     const zipcode = this.formGroup.value.zipcode.toString();
     if (zipcode.length === 5 && zipcode != null) {
       this.zipcodeError = false;
+      this.weatherService.setZipcode(zipcode);
       this.getCurrentWeather(zipcode);
-      this.formGroup.markAllAsTouched();
-      const formValues = JSON.stringify(this.formGroup.value);
-      localStorage.setItem('form', formValues);
     } else {
       this.zipcodeError = true;
     }
@@ -68,7 +66,6 @@ export class HomeComponent implements OnInit {
   updateCurrentTemp(res: any) {
     this.weatherService.setCurrentWeather(utils.createCurrentWeather(res));
     this.weatherService.setCurrentLocation(res.name + ', ' + res.sys.country);
-
   }
 
   getCurrentWeather(zipcode: string) {
@@ -81,5 +78,4 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
 }

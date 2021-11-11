@@ -22,16 +22,33 @@ export class FiveDayComponent implements OnInit {
     this.setFormValues();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.weatherService.currentForecastWeather.subscribe(weather => {
+      if (weather != null && weather.length > 0) {
+        this.currentWeather = weather;
+        this.error = false;
+        this.currentWeatherLoaded = true;
+      } else {
+        this.currentWeather = [];;
+        this.currentWeatherLoaded = false;
+      }
+    });
+    this.weatherService.currentForecastLocation.subscribe(location => {
+      if (location != null) {
+        this.location = location;
+      }
+    });
+    this.weatherService.currentZipcode.subscribe(zipcode => {
+      if (zipcode != null && zipcode !== '') {
+        this.formGroup.get('zipcode')?.setValue(zipcode);
+        this.getForecast(zipcode)
+      }
+    })
+   }
 
   public setFormValues() {
-    const form = localStorage.getItem('form');
-    let savedZipcode = '';
-    if (form) {
-      savedZipcode = JSON.parse(form).zipcode;
-    }
     this.formGroup = new FormGroup({
-      zipcode: new FormControl(savedZipcode, [Validators.required])
+      zipcode: new FormControl('', [Validators.required])
     })
   }
 
@@ -39,6 +56,7 @@ export class FiveDayComponent implements OnInit {
     const zipcode = this.formGroup.value.zipcode.toString();
     if(zipcode.length === 5 && zipcode != null) {
       this.zipcodeError = false;
+      this.weatherService.setZipcode(zipcode);
       this.getForecast(zipcode);
     } else {
       this.zipcodeError = true;
@@ -46,10 +64,8 @@ export class FiveDayComponent implements OnInit {
   }
 
   updateCurrentTemps(res: any) {
-    this.error = false;
-    this.location = res.city.name + ', ' + res.city.country;
-    this.currentWeather = utils.createFiveDayForecast(res);
-    this.currentWeatherLoaded = true;
+    this.weatherService.setForecastWeather(utils.createFiveDayForecast(res));
+    this.weatherService.setForecastLocation(res.city.name + ', ' + res.city.country);
   }
 
   getForecast(zipcode: string) {

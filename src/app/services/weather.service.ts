@@ -16,11 +16,21 @@ export class WeatherService {
     readonly fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?units=imperial&zip='
     readonly appID = `&appid=${environment.openWeatherApiKey}`;
 
+    private zipcode = new BehaviorSubject('');
+    currentZipcode = this.zipcode.asObservable();
+
     private weather = new BehaviorSubject(new Weather);
     currentWeather = this.weather.asObservable();
 
+    forecastWeatherList: Weather[][] = [];
+    private forecastWeather = new BehaviorSubject(this.forecastWeatherList);
+    currentForecastWeather = this.forecastWeather.asObservable();
+
     private location = new BehaviorSubject('');
     currentlocation = this.location.asObservable();
+
+    private forecastLocation = new BehaviorSubject('');
+    currentForecastLocation = this.forecastLocation.asObservable();
 
     constructor(private http: HttpClient) { }
 
@@ -43,9 +53,8 @@ export class WeatherService {
 
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-
-            console.error(error.message); // log to console instead
-
+            // log to console instead
+            console.error(error.message); 
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
@@ -57,5 +66,17 @@ export class WeatherService {
 
     setCurrentLocation(location: string) {
         this.location.next(location);
+    }
+
+    setForecastWeather(weather: Weather[][]) {
+        this.forecastWeather.next(weather);
+    }
+
+    setForecastLocation(forecastLocation: string) {
+        this.forecastLocation.next(forecastLocation);
+    }
+
+    setZipcode(zipcode: string) {
+        this.zipcode.next(zipcode);
     }
 }
