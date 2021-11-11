@@ -1,5 +1,5 @@
-export interface Weather {
-    date_time: string;
-    temperature: string;
-    icon: string;
+export class Weather {
+    date_time!: string;
+    temperature!: string;
+    icon!: string;
 }

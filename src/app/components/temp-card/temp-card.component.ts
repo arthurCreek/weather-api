@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Weather } from 'src/app/model/weather';
 
 @Component({
   selector: 'app-temp-card',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TempCardComponent implements OnInit {
 
+  @Input() currentWeather!: Weather;
+
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }

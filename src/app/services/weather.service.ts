@@ -31,4 +31,10 @@ export class WeatherService {
             }))
         )
     }
+
+    getGetFiveDayForecast(): Observable<any> {
+        const url = this.fiveDayUrl + this.tempZipCode + this.appID;
+
+        return this.http.get<any>(url).pipe()
+    }
 }
