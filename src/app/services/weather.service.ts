@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
 import { environment } from "src/environments/environment";
+import { Weather } from "../model/weather";
 
 
 @Injectable({
@@ -15,8 +16,11 @@ export class WeatherService {
     readonly fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?units=imperial&zip='
     readonly appID = `&appid=${environment.openWeatherApiKey}`;
 
-    private weather = new BehaviorSubject([]);
+    private weather = new BehaviorSubject(new Weather);
     currentWeather = this.weather.asObservable();
+
+    private location = new BehaviorSubject('');
+    currentlocation = this.location.asObservable();
 
     constructor(private http: HttpClient) { }
 
@@ -45,5 +49,13 @@ export class WeatherService {
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
+    }
+
+    setCurrentWeather(weather: Weather) {
+        this.weather.next(weather);
+    }
+
+    setCurrentLocation(location: string) {
+        this.location.next(location);
     }
 }

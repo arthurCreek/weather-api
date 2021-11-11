@@ -23,7 +23,22 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.weatherService.currentWeather.subscribe(weather => {
+      console.log(weather)
+      if(weather.date != null) {
+        this.currentWeather = weather;
+        this.error = false;
+        this.currentWeatherLoaded = true;
+      } else {
+        this.currentWeather = new Weather;
+        this.currentWeatherLoaded = false;
+      }
+    });
+    this.weatherService.currentlocation.subscribe(location => {
+      if(location != null) {
+        this.location = location;
+      }
+    })
   }
 
   public setFormValues() {
@@ -51,10 +66,9 @@ export class HomeComponent implements OnInit {
   }
 
   updateCurrentTemp(res: any) {
-    this.error = false;
-    this.location = res.name + ', ' + res.sys.country;
-    this.currentWeather = utils.createCurrentWeather(res);
-    this.currentWeatherLoaded = true;
+    this.weatherService.setCurrentWeather(utils.createCurrentWeather(res));
+    this.weatherService.setCurrentLocation(res.name + ', ' + res.sys.country);
+
   }
 
   getCurrentWeather(zipcode: string) {
