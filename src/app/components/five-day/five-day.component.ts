@@ -41,8 +41,10 @@ export class FiveDayComponent implements OnInit {
 
   // Validate zipcode, save zipcode, get current weather
   submitZipcode() {
+    // Check for letters in zipcode
+    var regExp = /[a-zA-Z]/g;
     const zipcode = this.formGroup.value.zipcode.toString();
-    if (zipcode.length === 5 && zipcode != null) {
+    if (zipcode.length === 5 && zipcode != null && !regExp.test(zipcode)) {
       this.zipcodeError = false;
       this.weatherService.setZipcode(zipcode);
       this.getForecast(zipcode);

@@ -8,11 +8,12 @@
   >
     <label for="zipcode">Zipcode</label>
     <input
-      type="number"
       formControlName="zipcode"
       data-test="zipcode"
       id="zipcode"
       class="border-2 w-24"
+      placeholder='60625'
+      onKeyPress="if(this.value.length==5) return false;"
     />
     <button type="submit" class="bg-blue-300 text-white h-full px-2">
       Submit
@@ -22,7 +23,7 @@
     <p class="pt-2 text-red-600">There was no data found for your search.  Please try again.</p>
   </div>
   <div *ngIf="zipcodeError">
-    <p class="pt-2 text-red-600">Please enter a 5 digit zipcode. Example (00000)</p>
+    <p class="pt-2 text-red-600">Please enter a 5 digit zipcode. Example (60625)</p>
   </div>
   <div *ngIf="currentWeatherLoaded">
     <div *ngFor="let weatherDay of currentWeather" class="flex flex-col py-4 border-b-2">
