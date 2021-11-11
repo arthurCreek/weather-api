@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Weather, WeatherType } from 'src/app/model/weather';
 import { WeatherService } from 'src/app/services/weather.service';
 import * as utils from '../../utils/utils';
@@ -16,15 +16,35 @@ export class FiveDayComponent implements OnInit {
   location: string = '';
   weatherType = WeatherType.FIVE_DAY;
   error = false;
+  zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
-      zipcode: new FormControl('')
+      zipcode: new FormControl('', [Validators.required])
     })
   }
 
-  ngOnInit(): void {
-    this.weatherService.getGetFiveDayForecast().subscribe(res => {
+  ngOnInit(): void { }
+
+  submitZipcode() {
+    const zipcode = this.formGroup.value.zipcode.toString();
+    if(zipcode.length === 5 && zipcode != null) {
+      this.zipcodeError = false;
+      this.getForecast(zipcode);
+    } else {
+      this.zipcodeError = true;
+    }
+  }
+
+  updateCurrentTemps(res: any) {
+    this.error = false;
+    this.location = res.city.name + ', ' + res.city.country;
+    this.currentWeather = utils.createFiveDayForecast(res);
+    this.currentWeatherLoaded = true;
+  }
+
+  getForecast(zipcode: string) {
+    this.weatherService.getGetFiveDayForecast(zipcode).subscribe(res => {
       if(res != null) {
         this.updateCurrentTemps(res);
       } else {
@@ -32,12 +52,6 @@ export class FiveDayComponent implements OnInit {
         this.error = true;
       }
     });
-  }
-  updateCurrentTemps(res: any) {
-    this.error = false;
-    this.location = res.city.name + ', ' + res.city.country;
-    this.currentWeather = utils.createFiveDayForecast(res);
-    this.currentWeatherLoaded = true;
   }
 
 }

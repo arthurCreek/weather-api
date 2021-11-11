@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   weatherType = WeatherType.CURRENT;
   location: string = '';
   error = false;
+  zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
@@ -24,14 +25,17 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.weatherService.getCurrentForecast().subscribe(res => {
-      if(res != null) {
-        this.updateCurrentTemp(res);
-      } else {
-        this.currentWeatherLoaded = false;
-        this.error = true;
-      }
-    });
+
+  }
+
+  submitZipcode() {
+    const zipcode = this.formGroup.value.zipcode.toString();
+    if(zipcode.length === 5 && zipcode != null) {
+      this.zipcodeError = false;
+      this.getCurrentWeather(zipcode);
+    } else {
+      this.zipcodeError = true;
+    }
   }
 
   updateCurrentTemp(res: any) {
@@ -39,6 +43,17 @@ export class HomeComponent implements OnInit {
     this.location = res.name + ', ' + res.sys.country;
     this.currentWeather = utils.createCurrentWeather(res);
     this.currentWeatherLoaded = true;
+  }
+
+  getCurrentWeather(zipcode: string) {
+    this.weatherService.getCurrentForecast(zipcode).subscribe(res => {
+      if(res != null) {
+        this.updateCurrentTemp(res);
+      } else {
+        this.currentWeatherLoaded = false;
+        this.error = true;
+      }
+    });
   }
 
 }

@@ -2,6 +2,7 @@
   <h1 *ngIf="currentWeatherLoaded" class="text-4xl font-bold py-4">{{location}}</h1>
   <form
     [formGroup]="formGroup"
+    (ngSubmit)="submitZipcode()"
     id="zipcodeForm"
     class="flex gap-2 items-center"
   >
@@ -12,6 +13,7 @@
       data-test="zipcode"
       id="zipcode"
       class="border-2 w-24"
+      onKeyPress="if(this.value.length==5) return false;"
     />
     <button type="submit" class="bg-blue-300 text-white h-full px-2">
       Submit
@@ -19,6 +21,9 @@
   </form>
   <div *ngIf="error">
     <p class="pt-2 text-red-600">There was no data found for your search.  Please try again.</p>
+  </div>
+  <div *ngIf="zipcodeError">
+    <p class="pt-2 text-red-600">Please enter a 5 digit zipcode. Example (00000)</p>
   </div>
   <div *ngIf="currentWeatherLoaded">
     <app-temp-card

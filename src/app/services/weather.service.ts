@@ -14,15 +14,14 @@ export class WeatherService {
     readonly currentUrl = 'https://api.openweathermap.org/data/2.5/weather?units=imperial&zip='
     readonly fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?units=imperial&zip='
     readonly appID = `&appid=${environment.openWeatherApiKey}`;
-    private tempZipCode = 90706;
 
     private weather = new BehaviorSubject([]);
     currentWeather = this.weather.asObservable();
 
     constructor(private http: HttpClient) { }
 
-    getCurrentForecast(): Observable<any> {
-        const url = this.currentUrl + this.tempZipCode + this.appID;
+    getCurrentForecast(zipcode: string): Observable<any> {
+        const url = this.currentUrl + zipcode+ this.appID;
 
         return this.http.get<any>(url).pipe(
             map(data => ({
@@ -32,8 +31,8 @@ export class WeatherService {
         )
     }
 
-    getGetFiveDayForecast(): Observable<any> {
-        const url = this.fiveDayUrl + this.tempZipCode + this.appID;
+    getGetFiveDayForecast(zipcode: string): Observable<any> {
+        const url = this.fiveDayUrl + zipcode + this.appID;
 
         return this.http.get<any>(url).pipe(catchError(this.handleError('forecast')));
     }
