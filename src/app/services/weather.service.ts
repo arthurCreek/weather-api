@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
 import { environment } from "src/environments/environment";
-import { Weather } from "../model/weather";
 
 
 @Injectable({
@@ -18,19 +17,6 @@ export class WeatherService {
 
     private zipcode = new BehaviorSubject('');
     currentZipcode = this.zipcode.asObservable();
-
-    private weather = new BehaviorSubject(new Weather);
-    currentWeather = this.weather.asObservable();
-
-    forecastWeatherList: Weather[][] = [];
-    private forecastWeather = new BehaviorSubject(this.forecastWeatherList);
-    currentForecastWeather = this.forecastWeather.asObservable();
-
-    private location = new BehaviorSubject('');
-    currentlocation = this.location.asObservable();
-
-    private forecastLocation = new BehaviorSubject('');
-    currentForecastLocation = this.forecastLocation.asObservable();
 
     constructor(private http: HttpClient) { }
 
@@ -58,22 +44,6 @@ export class WeatherService {
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
-    }
-
-    setCurrentWeather(weather: Weather) {
-        this.weather.next(weather);
-    }
-
-    setCurrentLocation(location: string) {
-        this.location.next(location);
-    }
-
-    setForecastWeather(weather: Weather[][]) {
-        this.forecastWeather.next(weather);
-    }
-
-    setForecastLocation(forecastLocation: string) {
-        this.forecastLocation.next(forecastLocation);
     }
 
     setZipcode(zipcode: string) {

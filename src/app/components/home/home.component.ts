@@ -31,23 +31,6 @@ export class HomeComponent implements OnInit {
         this.getCurrentWeather(zipcode)
       }
     })
-    // Subscribe to current weather observable
-    this.weatherService.currentWeather.subscribe(weather => {
-      if (weather.date != null) {
-        this.currentWeather = weather;
-        this.error = false;
-        this.currentWeatherLoaded = true;
-      } else {
-        this.currentWeather = new Weather;
-        this.currentWeatherLoaded = false;
-      }
-    });
-    // Subscribe to current weather location observable
-    this.weatherService.currentlocation.subscribe(location => {
-      if (location != null) {
-        this.location = location;
-      }
-    });
   }
 
   public setFormValues() {
@@ -68,17 +51,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  // Save weather data
-  updateCurrentTemp(res: any) {
-    this.weatherService.setCurrentWeather(utils.createCurrentWeather(res));
-    this.weatherService.setCurrentLocation(res.name + ', ' + res.sys.country);
-  }
-
   // Fetch data from weather service
   getCurrentWeather(zipcode: string) {
     this.weatherService.getCurrentForecast(zipcode).subscribe(res => {
       if (res != null) {
-        this.updateCurrentTemp(res);
+        this.currentWeather = utils.createCurrentWeather(res);
+        this.location = res.name + ', ' + res.sys.country;
+        this.error = false;
+        this.currentWeatherLoaded = true;
       } else {
         this.currentWeatherLoaded = false;
         this.error = true;

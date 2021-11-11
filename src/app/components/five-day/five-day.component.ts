@@ -31,23 +31,6 @@ export class FiveDayComponent implements OnInit {
         this.getForecast(zipcode)
       }
     })
-    // Subscribe to forecast weather observable
-    this.weatherService.currentForecastWeather.subscribe(weather => {
-      if (weather != null && weather.length > 0) {
-        this.currentWeather = weather;
-        this.error = false;
-        this.currentWeatherLoaded = true;
-      } else {
-        this.currentWeather = [];;
-        this.currentWeatherLoaded = false;
-      }
-    });
-    // Subscribe to forecast weather location observable
-    this.weatherService.currentForecastLocation.subscribe(location => {
-      if (location != null) {
-        this.location = location;
-      }
-    });
   }
 
   public setFormValues() {
@@ -68,17 +51,14 @@ export class FiveDayComponent implements OnInit {
     }
   }
 
-  // Save forecast weather data
-  updateCurrentTemps(res: any) {
-    this.weatherService.setForecastWeather(utils.createFiveDayForecast(res));
-    this.weatherService.setForecastLocation(res.city.name + ', ' + res.city.country);
-  }
-
   // Fetch data from weather service
   getForecast(zipcode: string) {
     this.weatherService.getGetFiveDayForecast(zipcode).subscribe(res => {
       if (res != null) {
-        this.updateCurrentTemps(res);
+        this.currentWeather = utils.createFiveDayForecast(res);
+        this.location = res.city.name + ', ' + res.city.country;
+        this.error = false;
+        this.currentWeatherLoaded = true;
       } else {
         this.currentWeatherLoaded = false;
         this.error = true;
