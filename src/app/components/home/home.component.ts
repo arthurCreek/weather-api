@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Weather, WeatherType } from 'src/app/model/weather';
 import { WeatherService } from 'src/app/services/weather.service';
 import * as utils from '../../utils/utils';
@@ -15,10 +15,11 @@ export class HomeComponent implements OnInit {
   currentWeatherLoaded = false;
   weatherType = WeatherType.CURRENT;
   location: string = '';
+  error = false;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
-      zipcode: new FormControl('')
+      zipcode: new FormControl('', [Validators.required])
     })
   }
 
@@ -28,11 +29,13 @@ export class HomeComponent implements OnInit {
         this.updateCurrentTemp(res);
       } else {
         this.currentWeatherLoaded = false;
+        this.error = true;
       }
     });
   }
 
   updateCurrentTemp(res: any) {
+    this.error = false;
     this.location = res.name + ', ' + res.sys.country;
     this.currentWeather = utils.createCurrentWeather(res);
     this.currentWeatherLoaded = true;

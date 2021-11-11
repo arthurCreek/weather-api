@@ -15,6 +15,7 @@ export class FiveDayComponent implements OnInit {
   currentWeatherLoaded = false;
   location: string = '';
   weatherType = WeatherType.FIVE_DAY;
+  error = false;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
@@ -28,10 +29,12 @@ export class FiveDayComponent implements OnInit {
         this.updateCurrentTemps(res);
       } else {
         this.currentWeatherLoaded = false;
+        this.error = true;
       }
     });
   }
   updateCurrentTemps(res: any) {
+    this.error = false;
     this.location = res.city.name + ', ' + res.city.country;
     this.currentWeather = utils.createFiveDayForecast(res);
     this.currentWeatherLoaded = true;

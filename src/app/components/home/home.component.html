@@ -17,6 +17,9 @@
       Submit
     </button>
   </form>
+  <div *ngIf="error">
+    <p class="pt-2 text-red-600">There was no data found for your search.  Please try again.</p>
+  </div>
   <div *ngIf="currentWeatherLoaded">
     <app-temp-card
       data-test="temp-card"

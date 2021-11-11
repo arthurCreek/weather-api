@@ -17,7 +17,9 @@
       Submit
     </button>
   </form>
-  <!-- <app-temp-card data-test="temp-card"></app-temp-card> -->
+  <div *ngIf="error">
+    <p class="pt-2 text-red-600">There was no data found for your search.  Please try again.</p>
+  </div>
   <div *ngIf="currentWeatherLoaded">
     <div *ngFor="let weatherDay of currentWeather" class="flex flex-col py-4 border-b-2">
       <p class="text-3xl font-semibold pb-2">{{ weatherDay[0].date }}</p>

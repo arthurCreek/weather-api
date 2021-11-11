@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from "rxjs";
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { catchError, map } from 'rxjs/operators';
 import { environment } from "src/environments/environment";
 
 
@@ -28,13 +28,23 @@ export class WeatherService {
             map(data => ({
                 ...data,
                 icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-            }))
+            })), catchError(this.handleError('current'))
         )
     }
 
     getGetFiveDayForecast(): Observable<any> {
         const url = this.fiveDayUrl + this.tempZipCode + this.appID;
 
-        return this.http.get<any>(url).pipe();
+        return this.http.get<any>(url).pipe(catchError(this.handleError('forecast')));
+    }
+
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+
+            console.error(error.message); // log to console instead
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
     }
 }
