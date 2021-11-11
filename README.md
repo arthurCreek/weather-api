@@ -1,6 +1,8 @@
 # WeatherAppAngular
 
-This is a simple Angular app fetching weather data from OpenWeatherAPI.  Styling with TailwindCSS.
+This is a simple Angular app fetching weather data from OpenWeatherAPI.  Styling with TailwindCSS, basic testing.
+
+IMPORTANT: If you would like to download and use this project, update src/environments/environment-dev-example.ts to 'environment-dev.ts' with your own OpenWeatherAPI key.
 
 Here are a few screenshots of the pages with data, no data, error handling.
 ![current](https://user-images.githubusercontent.com/30580612/141376814-267d04c0-0783-4c75-baab-4dddb73eb871.JPG)
