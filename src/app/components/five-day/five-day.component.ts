@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Weather, WeatherType } from 'src/app/model/weather';
 import { WeatherService } from 'src/app/services/weather.service';
+import * as utils from '../../utils/utils';
 
 @Component({
   selector: 'app-five-day',
@@ -9,6 +11,10 @@ import { WeatherService } from 'src/app/services/weather.service';
 })
 export class FiveDayComponent implements OnInit {
   formGroup: FormGroup;
+  currentWeather: Weather[][] = [];
+  currentWeatherLoaded = false;
+  location: string = '';
+  weatherType = WeatherType.FIVE_DAY;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
@@ -18,8 +24,18 @@ export class FiveDayComponent implements OnInit {
 
   ngOnInit(): void {
     this.weatherService.getGetFiveDayForecast().subscribe(res => {
-      console.log(res)
+      if(res != null) {
+        this.updateCurrentTemps(res);
+      } else {
+        this.currentWeatherLoaded = false;
+      }
     });
+  }
+  updateCurrentTemps(res: any) {
+    this.location = res.city.name;
+    this.currentWeather = utils.createFiveDayForecast(res.list);
+    console.log(this.currentWeather)
+    this.currentWeatherLoaded = true;
   }
 
 }

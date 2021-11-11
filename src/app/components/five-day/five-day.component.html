@@ -1,15 +1,34 @@
 <div class="flex flex-col items-center pt-16 lg:pt-32">
-    <form [formGroup]="formGroup" id="zipcodeForm" class="flex gap-2 items-center">
-      <label for="zipcode">Zipcode</label>
-      <input
-        type="number"
-        formControlName="zipcode"
-        data-test="zipcode"
-        id="zipcode"
-        class="border-2 w-24"
-      />
-      <button type="submit" class="bg-blue-300 text-white h-full px-2">Submit</button>
-    </form>
-    <app-temp-card data-test="temp-card"></app-temp-card>
+  <form
+    [formGroup]="formGroup"
+    id="zipcodeForm"
+    class="flex gap-2 items-center"
+  >
+    <label for="zipcode">Zipcode</label>
+    <input
+      type="number"
+      formControlName="zipcode"
+      data-test="zipcode"
+      id="zipcode"
+      class="border-2 w-24"
+    />
+    <button type="submit" class="bg-blue-300 text-white h-full px-2">
+      Submit
+    </button>
+  </form>
+  <!-- <app-temp-card data-test="temp-card"></app-temp-card> -->
+  <div *ngIf="currentWeatherLoaded">
+    <div *ngFor="let weatherDay of currentWeather" class="flex flex-col py-4 border-b-2">
+      <p class="text-4xl font-bold pb-2">{{ weatherDay[0].date }}</p>
+      <div class="flex gap-2">
+        <div *ngFor="let weatherHour of weatherDay" class="w-1/8">
+          <app-temp-card
+            data-test="temp-card"
+            [currentWeather]="weatherHour"
+            [weatherType]="weatherType"
+          ></app-temp-card>
+        </div>
+      </div>
+    </div>
   </div>
-  
+</div>

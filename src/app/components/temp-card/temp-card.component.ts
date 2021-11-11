@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Weather } from 'src/app/model/weather';
+import { Weather, WeatherType } from 'src/app/model/weather';
 
 @Component({
   selector: 'app-temp-card',
@@ -9,11 +9,21 @@ import { Weather } from 'src/app/model/weather';
 export class TempCardComponent implements OnInit {
 
   @Input() currentWeather!: Weather;
+  @Input() weatherType!: WeatherType;
 
-  constructor() { }
+  dateTimeString = '';
+
+
+  constructor() {
+
+   }
 
   ngOnInit(): void {
-    
+    if(this.weatherType === WeatherType.CURRENT) {
+      this.dateTimeString = this.currentWeather.date + ' | ' + this.currentWeather.time;
+    } else {
+      this.dateTimeString = this.currentWeather.time;
+    }
   }
 
 }

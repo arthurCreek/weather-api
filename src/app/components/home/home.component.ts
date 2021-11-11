@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Weather } from 'src/app/model/weather';
+import { Weather, WeatherType } from 'src/app/model/weather';
 import { WeatherService } from 'src/app/services/weather.service';
 import * as utils from '../../utils/utils';
 
@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
   formGroup: FormGroup;
   currentWeather: Weather = new Weather;
   currentWeatherLoaded = false;
+  weatherType = WeatherType.CURRENT;
 
   constructor(private weatherService: WeatherService) {
     this.formGroup = new FormGroup({
