@@ -19,10 +19,19 @@ export class FiveDayComponent implements OnInit {
   zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
+    // Initiate form falues
     this.setFormValues();
   }
 
   ngOnInit(): void {
+    // Fetch forecast weather data based on zipcode
+    this.weatherService.currentZipcode.subscribe(zipcode => {
+      if (zipcode != null && zipcode !== '') {
+        this.formGroup.get('zipcode')?.setValue(zipcode);
+        this.getForecast(zipcode)
+      }
+    })
+    // Subscribe to forecast weather observable
     this.weatherService.currentForecastWeather.subscribe(weather => {
       if (weather != null && weather.length > 0) {
         this.currentWeather = weather;
@@ -33,18 +42,13 @@ export class FiveDayComponent implements OnInit {
         this.currentWeatherLoaded = false;
       }
     });
+    // Subscribe to forecast weather location observable
     this.weatherService.currentForecastLocation.subscribe(location => {
       if (location != null) {
         this.location = location;
       }
     });
-    this.weatherService.currentZipcode.subscribe(zipcode => {
-      if (zipcode != null && zipcode !== '') {
-        this.formGroup.get('zipcode')?.setValue(zipcode);
-        this.getForecast(zipcode)
-      }
-    })
-   }
+  }
 
   public setFormValues() {
     this.formGroup = new FormGroup({
@@ -52,9 +56,10 @@ export class FiveDayComponent implements OnInit {
     })
   }
 
+  // Validate zipcode, save zipcode, get current weather
   submitZipcode() {
     const zipcode = this.formGroup.value.zipcode.toString();
-    if(zipcode.length === 5 && zipcode != null) {
+    if (zipcode.length === 5 && zipcode != null) {
       this.zipcodeError = false;
       this.weatherService.setZipcode(zipcode);
       this.getForecast(zipcode);
@@ -63,14 +68,16 @@ export class FiveDayComponent implements OnInit {
     }
   }
 
+  // Save forecast weather data
   updateCurrentTemps(res: any) {
     this.weatherService.setForecastWeather(utils.createFiveDayForecast(res));
     this.weatherService.setForecastLocation(res.city.name + ', ' + res.city.country);
   }
 
+  // Fetch data from weather service
   getForecast(zipcode: string) {
     this.weatherService.getGetFiveDayForecast(zipcode).subscribe(res => {
-      if(res != null) {
+      if (res != null) {
         this.updateCurrentTemps(res);
       } else {
         this.currentWeatherLoaded = false;

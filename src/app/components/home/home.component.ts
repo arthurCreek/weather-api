@@ -19,10 +19,19 @@ export class HomeComponent implements OnInit {
   zipcodeError = false;
 
   constructor(private weatherService: WeatherService) {
+    // Initiate form falues
     this.setFormValues();
   }
 
   ngOnInit(): void {
+    // Fetch current weather data based on zipcode
+    this.weatherService.currentZipcode.subscribe(zipcode => {
+      if (zipcode != null && zipcode !== '') {
+        this.formGroup.get('zipcode')?.setValue(zipcode);
+        this.getCurrentWeather(zipcode)
+      }
+    })
+    // Subscribe to current weather observable
     this.weatherService.currentWeather.subscribe(weather => {
       if (weather.date != null) {
         this.currentWeather = weather;
@@ -33,17 +42,12 @@ export class HomeComponent implements OnInit {
         this.currentWeatherLoaded = false;
       }
     });
+    // Subscribe to current weather location observable
     this.weatherService.currentlocation.subscribe(location => {
       if (location != null) {
         this.location = location;
       }
     });
-    this.weatherService.currentZipcode.subscribe(zipcode => {
-      if (zipcode != null && zipcode !== '') {
-        this.formGroup.get('zipcode')?.setValue(zipcode);
-        this.getCurrentWeather(zipcode)
-      }
-    })
   }
 
   public setFormValues() {
@@ -52,6 +56,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  // Validate zipcode, save zipcode, get current weather
   submitZipcode() {
     const zipcode = this.formGroup.value.zipcode.toString();
     if (zipcode.length === 5 && zipcode != null) {
@@ -63,11 +68,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // Save weather data
   updateCurrentTemp(res: any) {
     this.weatherService.setCurrentWeather(utils.createCurrentWeather(res));
     this.weatherService.setCurrentLocation(res.name + ', ' + res.sys.country);
   }
 
+  // Fetch data from weather service
   getCurrentWeather(zipcode: string) {
     this.weatherService.getCurrentForecast(zipcode).subscribe(res => {
       if (res != null) {
