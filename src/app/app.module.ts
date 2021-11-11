@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FiveDayComponent } from './components/five-day/five-day.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TempCardComponent } from './components/temp-card/temp-card.component';
+import { WeatherService } from './services/weather.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { TempCardComponent } from './components/temp-card/temp-card.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [WeatherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
